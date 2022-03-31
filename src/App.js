@@ -2,59 +2,52 @@ import "./App.css";
 import Counter from "./components/Counter";
 import Header from "./components/website/Header";
 import Footer from "./components/website/Footer";
-
-import { useSelector } from "react-redux";
-
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
-
+import { connect } from "react-redux";
+import { BrowserRouter, Switch, Redirect, Route, Link } from "react-router-dom";
 import { routes } from "./routes";
 
-const Loginauth = ({ children, auth }) => {
-  const { user } = useSelector((state) => state.auth);
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  dark: state.website.dark,
+});
 
-  if (auth && !user) {
-    return <Navigate to="/login" />;
-  }
-  return children;
-};
-
-function App() {
-  const { dark } = useSelector((state) => state.website);
+function App({ user, dark }) {
+  // const { user } = useSelector((state) => state.auth);
+  // const { dark } = useSelector((state) => state.website);
 
   return (
     <BrowserRouter>
       <div className={dark ? "dark" : "light"}>
+        {/* {header component} */}
         <Header />
 
-        {routes.map(
-          (route) =>
-            !route.auth && (
-              <button>
-                <Link to={route.path}> {route.component.name} </Link>
-              </button>
-            )
-        )}
+        {/* {views} */}
+        <div className={dark ? "dark" : "light"}>
+          <Switch>
+            {routes.map((route, index) => (
+              <Route
+                exact={route.exact}
+                path={route.path}
+                key={index}
+                render={() => {
+                  if (route.auth && !user) {
+                    return <Redirect to="/login" />;
+                  }
+                  return <route.component />;
+                }}
+              />
+            ))}
+          </Switch>
+        </div>
 
-        <Routes>
-          {routes.map((route) => (
-            <Route
-              exact={route.exact}
-              key={route.path}
-              path={route.path}
-              element={
-                <Loginauth auth={route.auth}>
-                  <route.component />
-                </Loginauth>
-              }
-            />
-          ))}
-        </Routes>
-
+        {/* {Counter component} */}
         <Counter />
+
+        {/* {Footer component} */}
         <Footer />
       </div>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default connect(mapStateToProps)(App);
