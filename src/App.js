@@ -35,18 +35,6 @@ function App() {
             )
         )}
 
-        {/* <Routes>
-          {routes.map((route) => (
-            console.log(route),
-            <Route exact={route.exact} path={route.path} element={<route.component/>}/> ama ben auth 
-            
-          //     render={() => {
-          //   if (route.auth && !user) {
-          //       return (element={<>})} else{
-          //     return (element={route.component})}
-            // })
-          ))}
-        </Routes> */}
         <Routes>
           {routes.map((route) => (
             <Route
