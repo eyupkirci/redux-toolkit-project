@@ -4,7 +4,7 @@ const website = createSlice({
 
     name: 'website',
     initialState: {
-        dark: false,
+        dark: true,
         language: 'tr'
     },
     reducers: {

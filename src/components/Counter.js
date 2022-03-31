@@ -6,7 +6,8 @@ const Counter = () => {
     const count = useSelector(state => state.counter.value);
     const dispatch = useDispatch()
     return (
-        <div>
+        <div style={{backgroundColor:'#ddd'}}>
+            Counter Component
             <div>{count}</div>
             <div>
                 <button onClick={()=>dispatch(increment())}> (+) </button>
